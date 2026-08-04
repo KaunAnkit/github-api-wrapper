@@ -83,3 +83,15 @@ class GithubClient:
         )
 
         return Repository.model_validate(data)
+
+
+    def list_user_repos(self,username:str) -> list[Repository]:
+
+        data = self._request(
+            "GET",
+            f"/users/{username}/repos"
+        )
+
+        repo_list = [Repository.model_validate(repo_data) for repo_data in data ]
+
+        return repo_list
