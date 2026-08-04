@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class User(BaseModel):
@@ -13,3 +13,14 @@ class User(BaseModel):
     public_repos: int
     avatar_url: str
     html_url: str
+
+
+class Repository(BaseModel):
+
+    name: str
+    description : str | None = None
+    stars : int = Field(alias="stargazers_count")
+    forks : int = Field(alias="forks_count")
+    language : str | None = None
+
+

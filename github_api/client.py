@@ -1,5 +1,15 @@
 import httpx
-from github_api.models import User
+from github_api.models import User, Repository
+
+from github_api.exceptions import (
+    AuthenticationError,
+    UserNotFoundError,
+    RateLimitError,
+    ServerError,
+    GitHubAPIError,
+)
+
+from tenacity import retry, stop_after_attempt,wait_exponential,retry_if_exception_type
 
 
 class GithubClient:
@@ -20,6 +30,13 @@ class GithubClient:
             timeout=10.0,
         )
 
+
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1,min=1,max=8),
+        retry=retry_if_exception_type((RateLimitError, ServerError)),
+        reraise=True
+    )
     def _request(self, method :str, endpoint: str, **kwargs):
 
         response = self.client.request(
@@ -28,7 +45,22 @@ class GithubClient:
             **kwargs
         )
 
-        response.raise_for_status()
+        if response.status_code == 401:
+            raise AuthenticationError("Invalid GitHub token.")
+
+        elif response.status_code == 404:
+            raise UserNotFoundError(f"Resource '{endpoint}' was not found.")
+
+        elif response.status_code == 429:
+            raise RateLimitError("GitHub API rate limit exceeded.")
+
+        elif 500 <= response.status_code < 600:
+            raise ServerError("GitHub server error.")
+
+        elif response.is_error:
+            raise GitHubAPIError(
+                f"GitHub API returned {response.status_code}"
+            )
 
         return response.json()
 
@@ -43,4 +75,11 @@ class GithubClient:
 
         return User.model_validate(data)
 
-    
+    def get_repo(self,owner : str,repo:str)-> Repository:
+
+        data = self._request(
+            "GET",
+            f"/repos/{owner}/{repo}"
+        )
+
+        return Repository.model_validate(data)
