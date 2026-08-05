@@ -17,7 +17,7 @@ A lightweight, typed Python SDK for interacting with the GitHub REST API.
 ## Installation
 
 ```bash
-pip install github-api-wrapper
+pip install github-rest-sdk
 ```
 
 ## Quick Start
