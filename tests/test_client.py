@@ -1,11 +1,11 @@
-from github_api.client import GithubClient
+from github_api.client import GitHubClient
 from github_api.exceptions import UserNotFoundError
 
 import pytest
 
 def test_get_user():
 
-    client = GithubClient("fake_token")
+    client = GitHubClient("fake_token")
 
     client._request = lambda *args, **kwargs: {
         "login": "torvalds",
@@ -28,7 +28,7 @@ def test_get_user():
 
 def test_no_user():
 
-    client = GithubClient("fake_token")
+    client = GitHubClient("fake_token")
 
     client._request = fake_request
 

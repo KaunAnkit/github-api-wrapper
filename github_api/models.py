@@ -27,6 +27,6 @@ class Repository(BaseModel):
 class SearchRepositoriesResponse(BaseModel):
 
     total_count: int
-    incomplete_results: int
+    incomplete_results: bool
     items : list[Repository]
 

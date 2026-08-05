@@ -12,7 +12,7 @@ from github_api.exceptions import (
 from tenacity import retry, stop_after_attempt,wait_exponential,retry_if_exception_type
 
 
-class GithubClient:
+class GitHubClient:
 
     BASE_URL = "https://api.github.com/"
 
@@ -136,4 +136,8 @@ class GithubClient:
 
         return repo_list
 
-        
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self.client.close()

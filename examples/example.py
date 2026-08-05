@@ -1,10 +1,10 @@
-from github_api.client import GithubClient
+from github_api.client import GitHubClient
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
-client = GithubClient(os.getenv("YOUR_TOKEN_HERE"))
+client = GitHubClient(os.getenv("YOUR_TOKEN_HERE"))
 
 user = client.get_user("torvalds")
 
