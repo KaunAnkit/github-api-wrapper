@@ -24,5 +24,9 @@ class Repository(BaseModel):
     language : str | None = None
 
 
+class SearchRepositoriesResponse(BaseModel):
 
+    total_count: int
+    incomplete_results: int
+    items : list[Repository]
 

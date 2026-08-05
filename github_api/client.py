@@ -1,5 +1,5 @@
 import httpx
-from github_api.models import User, Repository
+from github_api.models import User, Repository , SearchRepositoriesResponse
 
 from github_api.exceptions import (
     AuthenticationError,
@@ -85,13 +85,55 @@ class GithubClient:
         return Repository.model_validate(data)
 
 
-    def list_user_repos(self,username:str) -> list[Repository]:
-
+    def list_user_repos(self,username:str,page : int = 1,per_page: int = 30,) -> list[Repository]:
         data = self._request(
             "GET",
-            f"/users/{username}/repos"
+            f"/users/{username}/repos",
+            params={
+                "page": page,
+                "per_page": per_page,
+            }
         )
 
         repo_list = [Repository.model_validate(repo_data) for repo_data in data ]
 
         return repo_list
+
+
+    def search_repositories(
+                self,
+                query : str,
+                sort: str = "stars",
+                page : int = 1,
+                per_page: int = 30,
+        ):
+
+        data = self._request(
+            "GET",
+            f"/search/repositories",
+            params = {
+                "q":query,
+                "sort": sort,
+                "page": page,
+                "per_page": per_page,
+            }
+        )
+
+        return SearchRepositoriesResponse.model_validate(data)
+
+    def list_all_user_repos(self, username: str):
+        page_count = 1
+        repo_list = []
+        while True:
+            data = self.list_user_repos(  
+                username,
+                page = page_count
+            )
+            if not data:
+                break
+            repo_list.extend(data)
+            page_count +=1
+
+        return repo_list
+
+        

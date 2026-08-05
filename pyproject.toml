@@ -1,0 +1,38 @@
+    [build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "github-api-wrapper"
+version = "0.1.0"
+description = "A lightweight typed Python wrapper for the GitHub REST API."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+    
+authors = [
+    { name = "Ankit Jha" }
+]
+
+dependencies = [
+    "httpx>=0.28.0",
+    "pydantic>=2.0.0"
+]
+
+keywords = [
+    "github",
+    "api",
+    "wrapper",
+    "sdk",
+    "python"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/YOUR_USERNAME/github-api-wrapper"
+Repository = "https://github.com/YOUR_USERNAME/github-api-wrapper"
