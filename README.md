@@ -1,5 +1,7 @@
 # GitHub API Wrapper
-
+[![PyPI version](https://img.shields.io/pypi/v/github-api-wrapper-py.svg)](https://pypi.org/project/github-api-wrapper-py/)
+[![Python](https://img.shields.io/pypi/pyversions/github-api-wrapper-py.svg)](https://pypi.org/project/github-api-wrapper-py/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 A lightweight, typed Python SDK for interacting with the GitHub REST API.
 
 ## Features
